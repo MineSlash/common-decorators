@@ -29,7 +29,8 @@ def retry(max_retries: int = 5, timeout: int = 0):
     Example:
         @retry(max_retries = 3, timeout = 3)
         @retry()
-        retry()(lambda: requests.get(url))()
+        retry()(lambda: requests.get("https://google.com"))()
+        retry()(lambda url: requests.get(url))("https://google.com")
     """
     def decorator_function(func):
         def wrapper(*args, **kwargs):
