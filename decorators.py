@@ -9,10 +9,12 @@ def runtime(func):
         @runtime
     """
     def wrapper(*args, **kwargs):
-        start = time.time()
+        start_time = time.perf_counter()
         result = func(*args, **kwargs)
-        end = time.time() - start
-        print(f"'{func.__name__}' function runtime was {end} seconds")
+        end_time = time.perf_counter()
+        diff_time = end_time - start_time
+        running_time = f"{diff_time:.3f} seconds ({diff_time * 1000:.3f} ms)" if end > 0.001 else f"{diff_time * 1000:.3f} ms"
+        print(f"'{func.__name__}' function runtime was {running_time}.")
         return result
     return wrapper
 
@@ -20,12 +22,14 @@ def runtime(func):
 def retry(max_retries: int = 5, timeout: int = 0):
     """
     This decorator tries to run the same command if it raises an exception for several times with timeout.
+    Also you can call it with a lambda function for one-line command usage.
     Parameters:
         max_retries: int = 5    (Number of tries)
         timeout: int = 0        (Timeout between tries in seconds)
     Example:
         @retry(max_retries = 3, timeout = 3)
         @retry()
+        retry()(lambda: requests.get(url))()
     """
     def decorator_function(func):
         def wrapper(*args, **kwargs):
