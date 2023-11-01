@@ -13,7 +13,7 @@ def runtime(func):
         result = func(*args, **kwargs)
         end_time = time.perf_counter()
         diff_time = end_time - start_time
-        running_time = f"{diff_time:.3f} seconds ({diff_time * 1000:.3f} ms)" if end > 0.001 else f"{diff_time * 1000:.3f} ms"
+        running_time = f"{diff_time:.3f} seconds ({diff_time * 1000:.3f} ms)" if diff_time > 0.001 else f"{diff_time * 1000:.3f} ms"
         print(f"'{func.__name__}' function runtime was {running_time}.")
         return result
     return wrapper
